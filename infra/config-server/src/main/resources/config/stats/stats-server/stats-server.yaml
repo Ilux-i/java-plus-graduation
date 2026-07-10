@@ -1,0 +1,30 @@
+server:
+  port: 0
+
+spring:
+  sql:
+    init:
+      mode: always
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ewm-stat-service
+    username: postgres
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+#---
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
+#
+#  datasource:
+#    driverClassName: org.h2.Driver
+#    url: jdbc:h2:mem:stat-local-db
+#    username: h2-ewm-stat-service-local
+#    password: password

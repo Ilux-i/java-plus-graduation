@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
+# main-service
+        - id: main_service_route
+          uri: lb://main-service
+          predicates:
+            - Path=/admin/**, /users/**, /public/**, /compilations/**, /events/**
+# stats-server
+        - id: stats_server_route
+          uri: lb://stats-server
+          predicates:
+            - Path=/hit, /stats/**
+
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.client.discovery: DEBUG
+    org.springframework.cloud.client.loadbalancer: DEBUG
