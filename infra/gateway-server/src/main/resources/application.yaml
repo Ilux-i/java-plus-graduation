@@ -13,7 +13,7 @@ spring:
     import: "optional:configserver:"
 
   cloud:
-     config:
+    config:
       discovery:
         enabled: true
         serviceId: CONFIG-SERVER
@@ -23,3 +23,9 @@ spring:
         initial-interval: 1000
         multiplier: 1.1
         max-interval: 6000
+
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: DEBUG
+#    org.springframework.cloud.client.discovery: DEBUG
+#    org.springframework.cloud.client.loadbalancer: DEBUG
