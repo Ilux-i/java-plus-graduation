@@ -24,6 +24,36 @@ spring:
         multiplier: 1.1
         max-interval: 6000
 
+
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
+        # main-service
+        - id: main_service_route
+          uri: lb://MAIN-SERVICE
+          predicates:
+            - Path=/admin/**, /users/**, /public/**, /compilations/**, /events/**, /categories/**
+        # stats-server
+        - id: stats_server_route
+          uri: lb://STATS-SERVER
+          predicates:
+            - Path=/hit, /stats/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, gateway, info
+      base-path: /actuator
+  endpoint:
+    gateway:
+      enabled: true
+
+server:
+  port: 8080
+
 #logging:
 #  level:
 #    org.springframework.cloud.gateway: DEBUG
