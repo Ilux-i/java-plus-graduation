@@ -1,5 +1,6 @@
 package ru.practicum.ewm.controller;
 
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,11 +21,11 @@ public class CommentPublicController {
     private final CommentService commentService;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public Page<CommentResponseDto> getApprovedCommentsByEvent(
-            @PathVariable Long eventId,
+            @PathVariable @PositiveOrZero Long eventId,
             @RequestParam(required = false) String status,
-            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
         log.info("Получение ОПУБЛИКОВАННЫХ комментариев для event: {}", eventId);
 
         return commentService.getApprovedCommentsByEvent(eventId, pageable);

@@ -11,7 +11,6 @@ import ru.practicum.ewm.model.event.EventState;
 
 import java.util.List;
 
-@Repository
 public interface EventRepository extends JpaRepository<Event, Long>,
         QuerydslPredicateExecutor<Event>, CustomEventRepository {
 

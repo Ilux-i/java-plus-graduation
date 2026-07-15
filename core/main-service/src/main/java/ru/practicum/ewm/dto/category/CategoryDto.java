@@ -1,14 +1,12 @@
 package ru.practicum.ewm.dto.category;
 
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDto {

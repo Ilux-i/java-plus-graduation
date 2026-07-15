@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+@Data
 @Builder
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@NoArgsConstructor
 public class NewEventDto {
 
     @NotBlank(message = "Аннотация события не может быть null или пустой")

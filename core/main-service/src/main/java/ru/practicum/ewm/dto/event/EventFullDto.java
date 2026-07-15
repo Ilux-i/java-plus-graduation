@@ -1,15 +1,15 @@
 package ru.practicum.ewm.dto.event;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.ewm.dto.category.CategoryDto;
 import ru.practicum.ewm.dto.user.UserShortDto;
 
-@Value
 @Builder
-@Getter
-@ToString
-@EqualsAndHashCode
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@NoArgsConstructor
 public class EventFullDto {
     String annotation;
     CategoryDto category;

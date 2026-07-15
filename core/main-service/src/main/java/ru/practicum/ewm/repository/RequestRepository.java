@@ -10,7 +10,6 @@ import ru.practicum.ewm.model.request.RequestStatus;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface RequestRepository extends JpaRepository<ParticipationRequest, Long> {
 
     @Query("""

@@ -4,14 +4,14 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.ewm.annotation.NotBlankOrNull;
 
-@Value
+@Data
 @Builder
-@Getter
-@ToString
-@EqualsAndHashCode
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@NoArgsConstructor
 public class UpdateEventUserRequest {
 
     @NotBlankOrNull

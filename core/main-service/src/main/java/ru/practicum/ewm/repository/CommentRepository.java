@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.ewm.model.comment.Comment;
 import ru.practicum.ewm.model.comment.CommentStatus;
 
-@Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findByEventIdAndStatus(Long eventId, CommentStatus status, Pageable pageable);
 

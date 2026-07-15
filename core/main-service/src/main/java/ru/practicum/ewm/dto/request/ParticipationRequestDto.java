@@ -1,12 +1,13 @@
 package ru.practicum.ewm.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Value;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-@Value
-@Getter
+@Data
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 public class ParticipationRequestDto {
 
     Long id;

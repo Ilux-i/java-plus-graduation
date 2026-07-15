@@ -157,9 +157,9 @@ public class ErrorHandler {
                 .build();
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiError handleAllExceptions(Exception ex) {
+    public ApiError handleAllExceptions(Throwable ex) {
         log.error("Внутренняя ошибка сервера: {}", ex.getMessage(), ex);
         return ApiError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.name())

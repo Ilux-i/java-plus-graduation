@@ -1,12 +1,15 @@
 package ru.practicum.ewm.dto.compilation;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GetManyCompilationDto {
-    Boolean pinned;
-    Integer from;
-    Integer size;
+
+    private Boolean pinned;
+    private Integer from;
+    private Integer size;
+
 }

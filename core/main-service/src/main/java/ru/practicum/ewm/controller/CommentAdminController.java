@@ -26,9 +26,8 @@ public class CommentAdminController {
     private final CommentService commentService;
 
     @PatchMapping("{commentId}/status")
-    @ResponseStatus(HttpStatus.OK)
     public CommentResponseDto updateCommentStatus(
-            @PathVariable Long commentId,
+            @PositiveOrZero @PathVariable Long commentId,
             @Valid @RequestBody CommentStatusUpdateRequest request
     ) {
         log.info("Админ запрос: изменить статус комментария ID={} на {}", commentId, request.getStatus());
@@ -36,9 +35,8 @@ public class CommentAdminController {
     }
 
     @GetMapping("/events/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
     public Page<CommentResponseDto> getCommentsByEvent(
-            @PathVariable Long eventId,
+            @PathVariable @PositiveOrZero Long eventId,
             @RequestParam(required = false) String status,
             @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(defaultValue = "10") @Positive Integer size) {
@@ -52,7 +50,9 @@ public class CommentAdminController {
 
     @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAdminComment(@PathVariable Long commentId) {
+    public void deleteAdminComment(
+            @PositiveOrZero @PathVariable Long commentId
+    ) {
         log.info("Admin запрос: удалить комментарий ID: {}", commentId);
         commentService.deleteAdminComment(commentId);
     }

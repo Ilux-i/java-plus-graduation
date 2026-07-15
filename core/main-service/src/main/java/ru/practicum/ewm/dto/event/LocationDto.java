@@ -3,15 +3,14 @@ package ru.practicum.ewm.dto.event;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Value;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-@Value
+@Data
 @Builder
-@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@NoArgsConstructor
 public class LocationDto {
 
     @NotNull(message = "Координаты локации события. Широта не должна быть null")

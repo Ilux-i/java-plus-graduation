@@ -1,5 +1,6 @@
 package ru.practicum.ewm.controller;
 
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +21,10 @@ public class CompilationController {
     private final CompilationService service;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<CompilationDto> getCompilations(
             @RequestParam(required = false) Boolean pinned,
             @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-            @PositiveOrZero @RequestParam(defaultValue = "10") Integer size
+            @Positive @RequestParam(defaultValue = "10") Integer size
     ) {
         return service.getCompilations(GetManyCompilationDto.builder()
                 .pinned(pinned)
@@ -35,9 +35,8 @@ public class CompilationController {
     }
 
     @GetMapping("/{compId}")
-    @ResponseStatus(HttpStatus.OK)
     public CompilationDto getCompilationById(
-            @PathVariable Long compId
+            @PositiveOrZero @PathVariable Long compId
     ) {
         return service.getCompilationById(compId);
     }

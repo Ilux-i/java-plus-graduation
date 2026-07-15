@@ -26,26 +26,30 @@ public class UserAdminController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@Valid @RequestBody NewUserRequest request) {
+    public UserDto createUser(
+            @Valid @RequestBody NewUserRequest request
+    ) {
         log.info("POST /admin/users - создание пользователя: {}", request);
         return userService.createUser(request);
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<UserDto> getUsers(
             @RequestParam(required = false)
             @Size(max = 100, message = "Не более 100 ID")  // ограничение на количество
             List<@Positive Long> ids,  // валидация каждого элемента списка
             @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-            @Positive @RequestParam(defaultValue = "10") Integer size) {
+            @Positive @RequestParam(defaultValue = "10") Integer size
+    ) {
         log.info("GET /admin/users - ids={}, from={}, size={}", ids, from, size);
         return userService.getUsers(ids, from, size);
     }
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@Positive @PathVariable Long userId) {
+    public void deleteUser(
+            @Positive @PathVariable Long userId
+    ) {
         log.info("DELETE /admin/users/{}", userId);
         userService.deleteUser(userId);
     }

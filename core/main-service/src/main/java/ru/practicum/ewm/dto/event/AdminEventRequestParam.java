@@ -3,12 +3,15 @@ package ru.practicum.ewm.dto.event;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Value
+@Data
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@NoArgsConstructor
 public class AdminEventRequestParam {
     List<@Positive Long> users;
     List<String> states;

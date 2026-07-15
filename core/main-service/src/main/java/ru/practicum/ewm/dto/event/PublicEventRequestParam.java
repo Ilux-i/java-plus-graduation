@@ -1,12 +1,15 @@
 package ru.practicum.ewm.dto.event;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Value
+@Data
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 public class PublicEventRequestParam {
     String text;
     List<Long> categories;
