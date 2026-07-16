@@ -1,0 +1,22 @@
+server:
+  port: 0
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+
+spring:
+  sql:
+    init:
+      mode: always
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ewm-stat-service
+    username: postgres
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
