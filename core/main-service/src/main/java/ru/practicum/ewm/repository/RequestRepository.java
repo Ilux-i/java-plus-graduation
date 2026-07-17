@@ -2,10 +2,9 @@ package ru.practicum.ewm.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import ru.practicum.ewm.dto.event.ConfirmedRequestCount;
-import ru.practicum.ewm.model.request.ParticipationRequest;
-import ru.practicum.ewm.model.request.RequestStatus;
+import ru.practicum.event.dto.event.ConfirmedRequestCount;
+import ru.practicum.request.ParticipationRequest;
+import ru.practicum.request.RequestStatus;
 
 import java.util.List;
 import java.util.Optional;

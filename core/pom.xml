@@ -18,6 +18,7 @@
         <module>request-management</module>
         <module>event-management</module>
         <module>user-administration</module>
+        <module>interaction-api</module>
     </modules>
 
     <properties>

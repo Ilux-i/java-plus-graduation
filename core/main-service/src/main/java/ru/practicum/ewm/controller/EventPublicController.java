@@ -9,9 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.StatClient;
+import ru.practicum.constants.Constants;
+import ru.practicum.event.dto.event.EventFullDto;
+import ru.practicum.event.dto.event.EventShortDto;
+import ru.practicum.event.dto.event.PublicEventRequestParam;
 import ru.practicum.ewm.HitDto;
-import ru.practicum.ewm.constants.Constants;
-import ru.practicum.ewm.dto.event.*;
 import ru.practicum.ewm.service.EventService;
 
 import java.time.LocalDateTime;

@@ -1,9 +1,10 @@
 package ru.practicum.ewm.service;
 
-import ru.practicum.ewm.dto.compilation.CompilationDto;
-import ru.practicum.ewm.dto.compilation.CreateCompilationDto;
-import ru.practicum.ewm.dto.compilation.GetManyCompilationDto;
-import ru.practicum.ewm.dto.compilation.UpdateCompilationDto;
+
+import ru.practicum.event.dto.compilation.CompilationDto;
+import ru.practicum.event.dto.compilation.UpdateCompilationDto;
+import ru.practicum.event.dto.compilation.GetManyCompilationDto;
+import ru.practicum.event.dto.compilation.CreateCompilationDto;
 
 import java.util.List;
 

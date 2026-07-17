@@ -5,10 +5,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import ru.practicum.ewm.constants.Constants;
-import ru.practicum.ewm.dto.event.AdminEventRequestParam;
-import ru.practicum.ewm.dto.event.PublicEventRequestParam;
-import ru.practicum.ewm.model.event.Event;
+import ru.practicum.constants.Constants;
+import ru.practicum.event.dto.event.AdminEventRequestParam;
+import ru.practicum.event.dto.event.PublicEventRequestParam;
+import ru.practicum.event.model.Event;
 import ru.practicum.ewm.model.event.QEvent;
 
 import java.time.LocalDateTime;
