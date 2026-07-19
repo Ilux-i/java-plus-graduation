@@ -1,4 +1,4 @@
-package ru.practicum.ewm.service;
+package ru.practicum.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -6,16 +6,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.state.EventState;
-import ru.practicum.ewm.exception.ConflictException;
-import ru.practicum.ewm.exception.NotFoundException;
-import ru.practicum.ewm.repository.EventRepository;
-import ru.practicum.ewm.repository.RequestRepository;
+import ru.practicum.exception.ConflictException;
+import ru.practicum.exception.NotFoundException;
+import ru.practicum.repository.RequestRepository;
 import ru.practicum.request.ParticipationRequest;
 import ru.practicum.request.RequestMapper;
 import ru.practicum.request.RequestStatus;
 import ru.practicum.request.dto.CreateUpdateRequestDto;
 import ru.practicum.request.dto.ParticipationRequestDto;
 import ru.practicum.user.User;
+import ru.practicum.user.UserClient;
+import ru.practicum.user.UserMapper;
+import ru.practicum.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.Optional;
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
-    private final UserRepository userRepository;
+    private final UserClient userRepository;
     private final EventRepository eventRepository;
 
     @Transactional
@@ -37,7 +39,7 @@ public class RequestServiceImpl implements RequestService {
         LocalDateTime now = LocalDateTime.now();
         //Получение сущностей для создания связей через JPA
         Event event = findEvent(dto.getEventId());
-        User requester = findUser(dto.getUserId());
+        User requester = UserMapper.toEntity(findUser(dto.getUserId()));
 
         //Проверка, что событие опубликовано
         if (event.getState() != EventState.PUBLISHED) {
@@ -128,10 +130,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     //Получение пользователя
-    private User findUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("User with id " + userId + " not found")
-        );
+    private UserDto findUser(Long userId) {
+        return userRepository.findUserById(userId); // не известно проверяется ли отсутствие пользователя
     }
 
     //Получение события

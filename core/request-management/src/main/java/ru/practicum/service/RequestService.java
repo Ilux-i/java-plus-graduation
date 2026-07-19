@@ -1,4 +1,4 @@
-package ru.practicum.ewm.service;
+package ru.practicum.service;
 
 
 import ru.practicum.request.dto.CreateUpdateRequestDto;

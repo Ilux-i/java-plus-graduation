@@ -1,11 +1,13 @@
 package ru.practicum.service;
 
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.practicum.user.dto.NewUserRequest;
 import ru.practicum.user.dto.UserDto;
 import ru.practicum.user.User;
@@ -61,4 +63,12 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
         log.info("Пользователь с id: {} удален", userId);
     }
+
+    @Override
+    public UserDto findUserById(Long userId) {
+        return UserMapper.toUserDto(userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользхователя с id: " + userId + ", не существует"))
+        );
+    }
+
 }

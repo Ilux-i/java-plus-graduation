@@ -1,4 +1,4 @@
-package ru.practicum.ewm.repository;
+package ru.practicum.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,7 +27,7 @@ public interface RequestRepository extends JpaRepository<ParticipationRequest, L
 
     Long countByEvent_IdAndStatus(Long eventId, RequestStatus status);
 
-    @Query("select new ru.practicum.ewm.dto.event.ConfirmedRequestCount(r.event.id, count(r.id)) " +
+    @Query("select new ru.practicum.event.dto.event.ConfirmedRequestCount(r.event.id, count(r.id)) " +
             "from ParticipationRequest r " +
             "where r.event.id in :eventIds and r.status = :status " +
             "group by r.event.id")
