@@ -1,4 +1,4 @@
-package ru.practicum.ewm.service;
+package ru.practicum.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

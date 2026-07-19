@@ -1,4 +1,4 @@
-package ru.practicum.ewm.controller;
+package ru.practicum.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.comment.dto.CommentResponseDto;
 import ru.practicum.comment.dto.CommentStatusUpdateRequest;
-import ru.practicum.ewm.service.CommentService;
+import ru.practicum.service.CommentService;
 
 @RestController
 @RequestMapping("/admin/comments")

@@ -1,4 +1,4 @@
-package ru.practicum.ewm.controller;
+package ru.practicum.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.comment.dto.CommentResponseDto;
 import ru.practicum.comment.dto.NewCommentDto;
 import ru.practicum.comment.dto.UpdateCommentUserRequest;
-import ru.practicum.ewm.service.CommentService;
+import ru.practicum.service.CommentService;
 
 @RestController
 @RequestMapping("/users/{userId}/events/{eventId}/comments")

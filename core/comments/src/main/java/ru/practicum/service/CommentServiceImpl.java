@@ -1,4 +1,4 @@
-package ru.practicum.ewm.service;
+package ru.practicum.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +15,13 @@ import ru.practicum.comment.dto.NewCommentDto;
 import ru.practicum.comment.dto.UpdateCommentUserRequest;
 import ru.practicum.constants.Constants;
 import ru.practicum.event.model.Event;
-import ru.practicum.ewm.exception.CommentException;
-import ru.practicum.ewm.exception.NotFoundException;
-import ru.practicum.ewm.exception.ValidationException;
-import ru.practicum.ewm.repository.CommentRepository;
-import ru.practicum.ewm.repository.EventRepository;
+import ru.practicum.exception.CommentException;
+import ru.practicum.exception.NotFoundException;
+import ru.practicum.exception.ValidationException;
+import ru.practicum.repository.CommentRepository;
 import ru.practicum.user.User;
+import ru.practicum.user.UserClient;
+import ru.practicum.user.UserMapper;
 
 import java.time.LocalDateTime;
 
@@ -29,14 +30,13 @@ import java.time.LocalDateTime;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
+    private UserClient userClient;
     private final EventRepository eventRepository;
 
     @Transactional
     @Override
     public CommentResponseDto addComment(Long userId, Long eventId, NewCommentDto dto) {
-        User author = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
-                "Добавление комментария. Пользователь с ID: " + userId + " не найден."));
+        User author = UserMapper.toEntity(userClient.findUserById(userId));
 
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(
                 "Добавление комментария. Событие с ID: " + eventId + " не найдено."));
@@ -65,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
             log.error("Обновление комментария. Переданное ID пользователя не совпадает с ID автора комментария.");
             throw new ValidationException("Обновление комментария. " +
                     "Переданное ID пользователя не совпадает с ID автора комментария.");
-        } else if (!userRepository.existsById(dto.getUserId())) {
+        } else if (!userClient.existsByUserId(dto.getUserId())) {
             log.error("Обновление комментария. Пользователь с ID: {} не найден.", dto.getUserId());
             throw new NotFoundException("Обновление комментария. " +
                     "Пользователь с ID: " + dto.getUserId() + " не найден.");

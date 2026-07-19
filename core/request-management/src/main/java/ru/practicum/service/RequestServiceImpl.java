@@ -29,7 +29,7 @@ import java.util.Optional;
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
-    private final UserClient userRepository;
+    private UserClient userClient;
     private final EventRepository eventRepository;
 
     @Transactional
@@ -95,7 +95,7 @@ public class RequestServiceImpl implements RequestService {
     public List<ParticipationRequestDto> getRequestByUserId(Long userId) {
         log.info("Получение запросов пользователя с id={}", userId);
 
-        findUser(userId); // проверка существования
+        checkUser(userId); // проверка существования
 
         return requestRepository.findAllByUserId(userId)
                 .stream()
@@ -108,7 +108,7 @@ public class RequestServiceImpl implements RequestService {
     public ParticipationRequestDto canceledRequest(Long userId, Long requestId) {
         log.info("Отмена запроса: userId={}, requestId={}", userId, requestId);
 
-        findUser(userId); // проверка существования
+        checkUser(userId); // проверка существования
 
         ParticipationRequest request = findParticipationRequest(requestId);
 
@@ -131,7 +131,7 @@ public class RequestServiceImpl implements RequestService {
 
     //Получение пользователя
     private UserDto findUser(Long userId) {
-        return userRepository.findUserById(userId); // не известно проверяется ли отсутствие пользователя
+        return userClient.findUserById(userId); // не известно проверяется ли отсутствие пользователя
     }
 
     //Получение события
@@ -146,5 +146,10 @@ public class RequestServiceImpl implements RequestService {
         return requestRepository.findById(requestId).orElseThrow(
                 () -> new NotFoundException("Request with id " + requestId + " not found")
         );
+    }
+
+    private void checkUser(long userId) {
+        if(!userClient.existsByUserId(userId)) // проверка существования
+            throw new NotFoundException("Не существует пользователя с id: " + userId);
     }
 }

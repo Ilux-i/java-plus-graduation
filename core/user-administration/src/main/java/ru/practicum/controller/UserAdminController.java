@@ -62,5 +62,12 @@ public class UserAdminController {
         return userService.findUserById(userId);
     }
 
+    @GetMapping
+    public Boolean existsById(
+            @Positive @RequestParam Long userId
+    ) {
+        return userService.existsByUserId(userId);
+    }
+
 
 }

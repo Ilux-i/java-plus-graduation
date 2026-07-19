@@ -1,4 +1,4 @@
-package ru.practicum.ewm.controller;
+package ru.practicum.controller;
 
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.comment.dto.CommentResponseDto;
-import ru.practicum.ewm.service.CommentService;
+import ru.practicum.service.CommentService;
 
 @Slf4j
 @RestController
