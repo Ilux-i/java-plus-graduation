@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Positive;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.user.dto.UserDto;
 
 @FeignClient(name = "user-service", path = "/admin/users")
@@ -15,9 +14,9 @@ public interface UserClient {
             @Positive @PathVariable Long userId
     );
 
-    @GetMapping
+    @GetMapping("/{userId}/exists")
     Boolean existsByUserId(
-            @Positive @RequestParam Long userId
+            @Positive @PathVariable Long userId
     );
 
 }

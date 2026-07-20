@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.event.client.EventClient;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.state.EventState;
 import ru.practicum.exception.ConflictException;
@@ -30,7 +31,7 @@ public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
     private UserClient userClient;
-    private final EventRepository eventRepository;
+    private EventClient eventClient;
 
     @Transactional
     @Override
@@ -136,9 +137,7 @@ public class RequestServiceImpl implements RequestService {
 
     //Получение события
     private Event findEvent(Long eventId) {
-        return eventRepository.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Event with id " + eventId + " not found")
-        );
+        return eventClient.findById(eventId);
     }
 
     //Получение запроса
@@ -149,7 +148,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     private void checkUser(long userId) {
-        if(!userClient.existsByUserId(userId)) // проверка существования
+        if(!userClient.existsByUserId(userId))
             throw new NotFoundException("Не существует пользователя с id: " + userId);
     }
 }

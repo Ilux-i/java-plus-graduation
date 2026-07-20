@@ -62,9 +62,9 @@ public class UserAdminController {
         return userService.findUserById(userId);
     }
 
-    @GetMapping
+    @GetMapping("/{userId}/exists")
     public Boolean existsById(
-            @Positive @RequestParam Long userId
+            @Positive @PathVariable Long userId
     ) {
         return userService.existsByUserId(userId);
     }

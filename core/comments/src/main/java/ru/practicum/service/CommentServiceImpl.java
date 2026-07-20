@@ -14,6 +14,7 @@ import ru.practicum.comment.dto.CommentStatusUpdateRequest;
 import ru.practicum.comment.dto.NewCommentDto;
 import ru.practicum.comment.dto.UpdateCommentUserRequest;
 import ru.practicum.constants.Constants;
+import ru.practicum.event.client.EventClient;
 import ru.practicum.event.model.Event;
 import ru.practicum.exception.CommentException;
 import ru.practicum.exception.NotFoundException;
@@ -31,16 +32,14 @@ import java.time.LocalDateTime;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private UserClient userClient;
-    private final EventRepository eventRepository;
+    private EventClient eventClient;
 
     @Transactional
     @Override
     public CommentResponseDto addComment(Long userId, Long eventId, NewCommentDto dto) {
         User author = UserMapper.toEntity(userClient.findUserById(userId));
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(
-                "Добавление комментария. Событие с ID: " + eventId + " не найдено."));
-
+        Event event = eventClient.findById(eventId);
         Comment newComment = CommentMapper.dtoToComment(
                 dto,
                 CommentStatus.PENDING,
@@ -75,7 +74,7 @@ public class CommentServiceImpl implements CommentService {
             log.error("Обновление комментария. Переданное ID события не совпадает с ID события комментария.");
             throw new ValidationException("Обновление комментария. " +
                     "Переданное ID события не совпадает с ID события комментария.");
-        } else if (!eventRepository.existsById(dto.getEventId())) {
+        } else if (!eventClient.existsById(dto.getEventId())) {
             log.error("Обновление комментария. Событие с ID: {} не найдено.", dto.getEventId());
             throw new NotFoundException("Обновление комментария. Событие с ID: " + dto.getEventId() + " не найдено.");
         }
@@ -110,7 +109,7 @@ public class CommentServiceImpl implements CommentService {
             log.error("Удаление комментария. Переданное ID пользователя не совпадает с ID автора комментария.");
             throw new ValidationException("Удаление комментария. " +
                     "Переданное ID пользователя не совпадает с ID автора комментария.");
-        } else if (!userRepository.existsById(userId)) {
+        } else if (!userClient.existsByUserId(userId)) {
             log.error("Удаление комментария. Пользователь с ID: {} не найден.", userId);
             throw new NotFoundException("Удаление комментария. " +
                     "Пользователь с ID: " + userId + " не найден.");
@@ -120,7 +119,7 @@ public class CommentServiceImpl implements CommentService {
             log.error("Удаление комментария. Переданное ID события не совпадает с ID события комментария.");
             throw new ValidationException("Удаление комментария. " +
                     "Переданное ID события не совпадает с ID события комментария.");
-        } else if (!eventRepository.existsById(eventId)) {
+        } else if (!eventClient.existsById(eventId)) {
             log.error("Удаление комментария. Событие с ID: {} не найдено.", eventId);
             throw new NotFoundException("Удаление комментария. Событие с ID: " + eventId + " не найдено.");
         }
@@ -173,7 +172,7 @@ public class CommentServiceImpl implements CommentService {
     public Page<CommentResponseDto> getCommentsByEvent(Long eventId, String status, Pageable pageable) {
         log.debug("Admin: получить комментарии по событию eventId= {}, status: {}", eventId, status);
 
-        if (!eventRepository.existsById(eventId)) {
+        if (!eventClient.existsById(eventId)) {
             throw new NotFoundException("Событие с ID: " + eventId + " не найдено");
         }
 
