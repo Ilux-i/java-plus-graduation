@@ -47,7 +47,7 @@ public class RequestInteriorController {
         service.saveAll(requests);
     }
 
-    @GetMapping("/confirmed/all")
+    @PostMapping("/confirmed/all")
     public List<ConfirmedRequestCount> countConfirmedRequestsByEventIds(
             @RequestBody List<Long> eventIds,
             @RequestParam RequestStatus requestStatus

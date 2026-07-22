@@ -6,7 +6,7 @@ import ru.practicum.event.dto.event.ConfirmedRequestCount;
 
 import java.util.List;
 
-@FeignClient(name = "request-management", path = "/interior/requests")
+@FeignClient(name = "REQUEST-MANAGEMENT", path = "/interior/requests")
 public interface RequestClient {
 
     @GetMapping("/{eventId}")
@@ -30,7 +30,7 @@ public interface RequestClient {
             @RequestBody List<ParticipationRequest> requests
     );
 
-    @GetMapping("/confirmed/all")
+    @PostMapping("/confirmed/all")
     List<ConfirmedRequestCount> countConfirmedRequestsByEventIds(
             @RequestBody List<Long> eventIds,
             @RequestParam RequestStatus requestStatus

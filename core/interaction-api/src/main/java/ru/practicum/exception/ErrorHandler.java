@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RestControllerAdvice(basePackages = "ru.practicum.ewm.controller")
+@RestControllerAdvice(basePackages = "ru.practicum")
 public class ErrorHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

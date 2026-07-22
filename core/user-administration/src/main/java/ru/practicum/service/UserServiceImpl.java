@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.practicum.user.dto.NewUserRequest;
 import ru.practicum.user.dto.UserDto;
 import ru.practicum.user.User;
@@ -13,8 +15,11 @@ import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.user.UserMapper;
 import ru.practicum.repository.UserRepository;
+import ru.practicum.user.dto.UserShortDto;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -72,6 +77,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean existsByUserId(Long userId) {
         return userRepository.existsById(userId);
+    }
+
+    @Override
+    public Map<Long, UserShortDto> findAllUsers(List<Long> userIds) {
+        List<User> users = userRepository.findAllById(userIds);
+
+        Map<Long, UserShortDto> res = new HashMap<>();
+        for (User user : users) {
+            res.put(user.getId(), UserMapper.toUserShortDto(user));
+        }
+
+        return res;
     }
 
 }

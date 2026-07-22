@@ -13,4 +13,6 @@ public interface CustomEventRepository {
 
     List<Event> findByPublicRequest(PublicEventRequestParam param, Pageable pageable);
 
+    List<Event> findAllUsers(Pageable pageable);
+
 }

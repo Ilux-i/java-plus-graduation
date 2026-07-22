@@ -14,7 +14,7 @@ public interface RequestRepository extends JpaRepository<ParticipationRequest, L
     @Query("""
             select r
             from ParticipationRequest r
-            where r.requester.id = :userId
+            where r.requester = :userId
             """)
     List<ParticipationRequest> findAllByUserId(long userId);
 
@@ -25,15 +25,15 @@ public interface RequestRepository extends JpaRepository<ParticipationRequest, L
             """)
     int changeState(long requestId, RequestStatus state);
 
-    Long countByEvent_IdAndStatus(Long eventId, RequestStatus status);
+    Long countByEventAndStatus(Long eventId, RequestStatus status);
 
-    @Query("select new ru.practicum.event.dto.event.ConfirmedRequestCount(r.event.id, count(r.id)) " +
+    @Query("select new ru.practicum.event.dto.event.ConfirmedRequestCount(r.event, count(r.id)) " +
             "from ParticipationRequest r " +
-            "where r.event.id in :eventIds and r.status = :status " +
-            "group by r.event.id")
+            "where r.event in :eventIds and r.status = :status " +
+            "group by r.event")
     List<ConfirmedRequestCount> countConfirmedRequestsByEventIds(List<Long> eventIds, RequestStatus status);
 
-    List<ParticipationRequest> findAllByEvent_Id(Long eventId);
+    List<ParticipationRequest> findAllByEvent(Long eventId);
 
-    Optional<ParticipationRequest> findByRequester_IdAndEvent_Id(Long userId, Long eventId);
+    Optional<ParticipationRequest> findByRequesterAndEvent(Long userId, Long eventId);
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long>,
         QuerydslPredicateExecutor<Event>, CustomEventRepository {
 
-    List<Event> findAllByInitiator_IdOrderByEventDateAsc(Long initiatorId, Pageable pageable);
+    List<Event> findAllByInitiatorOrderByEventDateAsc(Long initiatorId, Pageable pageable);
 
     List<Event> findAllByIdInOrderByIdAsc(List<Long> eventsIds);
 

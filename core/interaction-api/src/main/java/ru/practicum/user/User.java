@@ -25,7 +25,5 @@ public class User {
     @Column(name = "name", nullable = false, length = 250)
     private String name;
 
-    @OneToMany(mappedBy = "initiator", fetch = FetchType.LAZY)
-    private List<Event> events;
 
 }

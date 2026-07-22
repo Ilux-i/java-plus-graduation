@@ -36,8 +36,14 @@ public class EventAdminController {
             @RequestParam(defaultValue = "10")
                 @Positive Integer size
     ) {
-        log.info("Уровень Admin. Получение списка из {} событий по необходимым параметрам. " +
-                "Пропускаем {} элементов. ", size, from);
+        log.info("""
+                Уровень Admin. Получение списка из {} событий по необходимым параметрам.
+                states: {}
+                users: {}
+                categories: {}
+                rangeStart: {}
+                rangeEnd: {}
+                Пропускаем {} элементов.\s""", size, users, states, categories, rangeStart, rangeEnd, from);
 
         List<Long> validUsers = filterValidIds(users);
         List<Long> validCategories = filterValidIds(categories);

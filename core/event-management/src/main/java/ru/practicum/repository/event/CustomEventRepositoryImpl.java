@@ -24,7 +24,7 @@ public class CustomEventRepositoryImpl implements CustomEventRepository {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (param.getUsers() != null && !param.getUsers().isEmpty()) {
-            builder.and(QEvent.event.initiator.id.in(param.getUsers()));
+            builder.and(QEvent.event.initiator.in(param.getUsers()));
         }
 
         if (param.getStates() != null && !param.getStates().isEmpty()) {
@@ -92,6 +92,16 @@ public class CustomEventRepositoryImpl implements CustomEventRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(QEvent.event.eventDate.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<Event> findAllUsers(Pageable pageable) {
+        return queryFactory
+                .selectFrom(QEvent.event)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(QEvent.event.id.asc())
                 .fetch();
     }
 

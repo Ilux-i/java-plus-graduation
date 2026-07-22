@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.user.dto.NewUserRequest;
 import ru.practicum.user.dto.UserDto;
 import ru.practicum.service.UserService;
+import ru.practicum.user.dto.UserShortDto;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -69,5 +71,11 @@ public class UserAdminController {
         return userService.existsByUserId(userId);
     }
 
+    @PostMapping("/all")
+    public Map<Long, UserShortDto> findAllUsers(
+            @RequestBody List<Long> userIds
+    ) {
+        return userService.findAllUsers(userIds);
+    }
 
 }

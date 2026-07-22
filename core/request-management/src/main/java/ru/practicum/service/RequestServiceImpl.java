@@ -30,8 +30,8 @@ import java.util.Optional;
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
-    private UserClient userClient;
-    private EventClient eventClient;
+    private final UserClient userClient;
+    private final EventClient eventClient;
 
     @Transactional
     @Override
@@ -48,7 +48,7 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException("Событие еще не опубликовано");
         }
         //Проверка, что инициатор не пытается участвовать в своем событии
-        if (event.getInitiator().getId().equals(requester.getId())) {
+        if (event.getInitiator().equals(requester.getId())) {
             log.error("Инициатор не может участвовать в собственном мероприятии. eventId={}, userId={}",
                     event.getId(), requester.getId());
             throw new ConflictException("Инициатор не может участвовать в собственном мероприятии");
@@ -56,7 +56,7 @@ public class RequestServiceImpl implements RequestService {
 
         //Проверка, что пользователь уже не создавал запрос
         Optional<ParticipationRequest> existingRequest =
-                requestRepository.findByRequester_IdAndEvent_Id(requester.getId(), event.getId());
+                requestRepository.findByRequesterAndEvent(requester.getId(), event.getId());
 
         if (existingRequest.isPresent()) {
             log.error("Запрос пользователя {} на событие {} уже существует",
@@ -66,7 +66,7 @@ public class RequestServiceImpl implements RequestService {
         }
 
         // Проверка лимита участников
-        Long approvedRequestsCount = requestRepository.countByEvent_IdAndStatus(
+        Long approvedRequestsCount = requestRepository.countByEventAndStatus(
                 event.getId(), RequestStatus.CONFIRMED);
 
         if (event.getParticipantLimit() > 0 && approvedRequestsCount >= event.getParticipantLimit()) {
@@ -86,7 +86,7 @@ public class RequestServiceImpl implements RequestService {
             initialStatus = RequestStatus.PENDING;
         }
 
-        ParticipationRequest request = RequestMapper.toEntity(now, event, requester, initialStatus);
+        ParticipationRequest request = RequestMapper.toEntity(now, event.getId(), requester.getId(), initialStatus);
         ParticipationRequest saved = requestRepository.save(request);
         log.info("Создан запрос с id={}, статус={}", saved.getId(), initialStatus);
         return RequestMapper.toParticipationRequestDto(saved);
@@ -114,7 +114,7 @@ public class RequestServiceImpl implements RequestService {
         ParticipationRequest request = findParticipationRequest(requestId);
 
         // Проверка, что запрос принадлежит пользователю
-        if (!request.getRequester().getId().equals(userId)) {
+        if (!request.getRequester().equals(userId)) {
             log.error("Запрос с id={} не принадлежит пользователю с id={}", requestId, userId);
             throw new NotFoundException("Запрос не найден или не принадлежит пользователю");
         }

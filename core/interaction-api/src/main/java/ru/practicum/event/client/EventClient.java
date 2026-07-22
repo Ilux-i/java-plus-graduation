@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.practicum.event.model.Event;
 
-@FeignClient(name = "event-management", path = "/interior/events")
+@FeignClient(name = "EVENT-MANAGEMENT", path = "/interior/events")
 public interface EventClient {
 
     @GetMapping("/{eventId}")

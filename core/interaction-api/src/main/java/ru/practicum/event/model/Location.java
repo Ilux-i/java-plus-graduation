@@ -1,5 +1,6 @@
 package ru.practicum.event.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,5 +24,6 @@ public class Location {
     private Double lon;
 
     @OneToOne(mappedBy = "location")
+    @JsonManagedReference("event-location")
     private Event event;
 }

@@ -1,9 +1,9 @@
 package ru.practicum.event.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import ru.practicum.event.state.EventState;
-import ru.practicum.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,8 +24,9 @@ public class Event {
     @Column(name = "annotation", nullable = false, length = 2000)
     private String annotation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference("event-category")
     private Category category;
 
     @Column(name = "created_on", nullable = false)
@@ -37,12 +38,12 @@ public class Event {
     @Column(name = "event_date", nullable = false)
     private LocalDateTime eventDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "initiator_id", nullable = false)
-    private User initiator;
+    @Column(name = "initiator")
+    private Long initiator;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id", nullable = false)
+    @JsonBackReference("event-location")
     private Location location;
 
     @Column(name = "paid", nullable = false)

@@ -2,9 +2,7 @@ package ru.practicum.request;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.constants.Constants;
-import ru.practicum.event.model.Event;
 import ru.practicum.request.dto.ParticipationRequestDto;
-import ru.practicum.user.User;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +10,7 @@ import java.time.LocalDateTime;
 public class RequestMapper {
 
     //Преобразование в сущность
-    public ParticipationRequest toEntity(LocalDateTime nowData, Event event, User requester, RequestStatus status) {
+    public ParticipationRequest toEntity(LocalDateTime nowData, Long event, Long requester, RequestStatus status) {
         return ParticipationRequest.builder()
                 .created(nowData)
                 .event(event)
@@ -26,8 +24,8 @@ public class RequestMapper {
         return ParticipationRequestDto.builder()
                 .id(req.getId())
                 .created(req.getCreated().format(Constants.FORMATTER))
-                .event(req.getEvent().getId())
-                .requester(req.getRequester().getId())
+                .event(req.getEvent())
+                .requester(req.getRequester())
                 .status(req.getStatus().toString())
                 .build();
     }

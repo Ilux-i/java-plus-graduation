@@ -94,6 +94,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--    Feign Client    -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

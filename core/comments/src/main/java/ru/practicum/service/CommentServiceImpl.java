@@ -31,8 +31,8 @@ import java.time.LocalDateTime;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
-    private UserClient userClient;
-    private EventClient eventClient;
+    private final UserClient userClient;
+    private final EventClient eventClient;
 
     @Transactional
     @Override
