@@ -22,7 +22,7 @@ _Gateway:_ http://localhost:8080
 
 _Discovery Service:_ http://localhost:8761
 
-# USER-ADMINISTRATION SERVICE
+# USER-SERVICE
 
 ---
 
@@ -134,7 +134,7 @@ POST /admin/users/all
 }
 ```
 
-# EVENT-MANAGEMENT SERVICE
+# EVENT-SERVICE
 
 ---
 
@@ -837,7 +837,7 @@ PATCH /users/{userId}/events/{eventId}/requests
 }
 ```
 
-# REQUEST-MANAGEMENT SERVICE
+# REQUEST-SERVICE
 
 ---
 

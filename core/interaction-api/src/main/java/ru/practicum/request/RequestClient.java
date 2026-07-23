@@ -6,7 +6,7 @@ import ru.practicum.event.dto.event.ConfirmedRequestCount;
 
 import java.util.List;
 
-@FeignClient(name = "REQUEST-MANAGEMENT", path = "/interior/requests")
+@FeignClient(name = "REQUEST-SERVICE", path = "/interior/requests")
 public interface RequestClient {
 
     @GetMapping("/{eventId}")

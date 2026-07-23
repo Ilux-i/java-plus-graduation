@@ -37,18 +37,18 @@ spring:
             - Path=/users/{userId}/events/{eventId}/comments/**
 
         - id: request-management_route
-          uri: lb://REQUEST-MANAGEMENT
+          uri: lb://REQUEST-SERVICE
           predicates:
             - Path=/users/{userId}/requests/**
 
         - id: user-events_route
-          uri: lb://EVENT-MANAGEMENT
+          uri: lb://EVENT-SERVICE
           predicates:
             - Path=/users/{userId}/events/**
 
         # Администраторские пути
         - id: event-management_admin_route
-          uri: lb://EVENT-MANAGEMENT
+          uri: lb://EVENT-SERVICE
           predicates:
             - Path=/admin/events/**, /admin/categories/**, /admin/compilations/**
 
@@ -58,13 +58,13 @@ spring:
             - Path=/admin/comments/**
 
         - id: user-service_route
-          uri: lb://USER-ADMINISTRATION
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/admin/users/**
 
         # Публичные пути
         - id: event-management_public_route
-          uri: lb://EVENT-MANAGEMENT
+          uri: lb://EVENT-SERVICE
           predicates:
             - Path=/events/**, /categories/**, /compilations/**
 

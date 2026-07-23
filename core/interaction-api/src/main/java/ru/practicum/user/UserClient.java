@@ -12,7 +12,7 @@ import ru.practicum.user.dto.UserShortDto;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "USER-ADMINISTRATION", path = "/admin/users")
+@FeignClient(name = "USER-SERVICE", path = "/admin/users")
 public interface UserClient {
 
     @GetMapping("/{userId}")
