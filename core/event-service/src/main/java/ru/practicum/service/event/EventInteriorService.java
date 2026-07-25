@@ -1,13 +1,13 @@
 package ru.practicum.service.event;
 
 import jakarta.ws.rs.NotFoundException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.event.model.Event;
 import ru.practicum.repository.event.EventRepository;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EventInteriorService {
 
     private final EventRepository repository;

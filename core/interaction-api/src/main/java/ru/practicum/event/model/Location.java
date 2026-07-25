@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,7 +25,7 @@ public class Location {
     @Column(name = "lon", nullable = false)
     private Double lon;
 
-    @OneToOne(mappedBy = "location")
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
     @JsonManagedReference("event-location")
-    private Event event;
+    private List<Event> event;
 }

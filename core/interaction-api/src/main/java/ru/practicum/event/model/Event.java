@@ -24,7 +24,7 @@ public class Event {
     @Column(name = "annotation", nullable = false, length = 2000)
     private String annotation;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     @JsonBackReference("event-category")
     private Category category;
@@ -41,7 +41,7 @@ public class Event {
     @Column(name = "initiator")
     private Long initiator;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "location_id", nullable = false)
     @JsonBackReference("event-location")
     private Location location;
