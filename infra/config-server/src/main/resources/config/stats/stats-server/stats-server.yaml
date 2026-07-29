@@ -1,10 +1,6 @@
 server:
   port: 0
 
-#eureka:
-#  instance:
-#    prefer-ip-address: true
-
 spring:
   sql:
     init:

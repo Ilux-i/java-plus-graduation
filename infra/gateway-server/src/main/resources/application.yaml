@@ -30,16 +30,48 @@ spring:
         locator:
           enabled: false
       routes:
-        # main-service
-        - id: main_service_route
-          uri: lb://MAIN-SERVICE
+        # Специфичные
+        - id: comments_user_route
+          uri: lb://COMMENTS
           predicates:
-            - Path=/admin/**, /users/**, /public/**, /compilations/**, /events/**, /categories/**
-        # stats-server
-        - id: stats_server_route
-          uri: lb://STATS-SERVER
+            - Path=/users/{userId}/events/{eventId}/comments/**
+
+        - id: request-management_route
+          uri: lb://REQUEST-SERVICE
           predicates:
-            - Path=/hit, /stats/**
+            - Path=/users/{userId}/requests/**
+
+        - id: user-events_route
+          uri: lb://EVENT-SERVICE
+          predicates:
+            - Path=/users/{userId}/events/**
+
+        # Администраторские пути
+        - id: event-management_admin_route
+          uri: lb://EVENT-SERVICE
+          predicates:
+            - Path=/admin/events/**, /admin/categories/**, /admin/compilations/**
+
+        - id: comments_admin_route
+          uri: lb://COMMENTS
+          predicates:
+            - Path=/admin/comments/**
+
+        - id: user-service_route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/admin/users/**
+
+        # Публичные пути
+        - id: event-management_public_route
+          uri: lb://EVENT-SERVICE
+          predicates:
+            - Path=/events/**, /categories/**, /compilations/**
+
+        - id: comments_public_route
+          uri: lb://COMMENTS
+          predicates:
+            - Path=/public/events/{eventId}/comments/**
 
 management:
   endpoints:
