@@ -1,0 +1,70 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/analyzer
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: false
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: analyzer-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      isolation-level: read_committed
+      max-poll-records: 500
+      fetch-min-bytes: 1024
+      fetch-max-wait-ms: 500
+      max-partition-fetch-bytes: 1048576
+      properties:
+        session.timeout.ms: 10000
+        heartbeat.interval.ms: 3000
+        max.poll.interval.ms: 300000
+        reconnect.backoff.ms: 50
+        reconnect.backoff.max.ms: 1000
+
+server:
+  port: 0
+
+grpc:
+  server:
+    port: 0
+    reflection-service-enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway,health,info
+  endpoint:
+    gateway:
+      enabled: true
+
+kafka:
+  topics:
+    user: stats.user-actions.v1
+    events: stats.events-similarity.v1
+
+recommendations:
+  k-nearest-neighbors: 5
+  recent-events-limit: 10
+  max-results: 20
