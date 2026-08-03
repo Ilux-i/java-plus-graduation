@@ -11,6 +11,7 @@ import ru.yandex.practicum.repository.UserActionRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -26,7 +27,7 @@ public class RecommendationService {
     public List<RecommendedEventProto> getRecommendationsForUser(long userId, int maxResults) {
         log.debug("Getting recommendations for user: {}, maxResults: {}", userId, maxResults);
 
-        // 1. Получаем все действия пользователя
+        // Получаем все действия пользователя
         List<UserAction> userActions = userActionRepository.findAllByUserId(userId);
 
         if (userActions.isEmpty()) {
@@ -34,13 +35,21 @@ public class RecommendationService {
             return Collections.emptyList();
         }
 
-        // 2. Получаем ID событий, с которыми взаимодействовал пользователь
+        // Получаем ID событий, с которыми взаимодействовал пользователь
         Set<Long> interactedEventIds = userActions.stream()
                 .map(UserAction::getEventId)
                 .collect(Collectors.toSet());
 
-        // 3. Для каждого события, с которым взаимодействовал пользователь,
-        // находим похожие события и агрегируем их score
+        // Получаем уникальные ID событий для запроса в БД
+        List<Long> eventIds = userActions.stream()
+                .map(UserAction::getEventId)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+
+        Map<Long, List<EventSimilarity>> similaritiesByEvent = getSimilaritiesGroupedByEvent(eventIds);
+
+        // Вычисляем веса
         Map<Long, Double> eventScores = new HashMap<>();
         Map<Long, Integer> eventCounts = new HashMap<>();
 
@@ -48,9 +57,11 @@ public class RecommendationService {
             long eventId = action.getEventId();
             double rating = action.getRating().doubleValue();
 
-            // Находим похожие события для текущего события
-            List<EventSimilarity> similarities = eventSimilarityRepository
-                    .findByEvent1OrEvent2OrderBySimilarityDesc(eventId);
+            // Получаем похожие события из мапы
+            List<EventSimilarity> similarities = similaritiesByEvent.getOrDefault(
+                    eventId,
+                    Collections.emptyList()
+            );
 
             for (EventSimilarity similarity : similarities) {
                 long similarEventId = similarity.getEvent1() == eventId
@@ -70,7 +81,7 @@ public class RecommendationService {
             }
         }
 
-        // 4. Нормализуем scores и создаем Proto объекты
+        // Нормализуем scores и создаем Proto объекты
         List<RecommendedEventProto> recommendations = eventScores.entrySet().stream()
                 .map(entry -> {
                     long eventId = entry.getKey();
@@ -98,11 +109,11 @@ public class RecommendationService {
         log.debug("Getting similar events for event: {}, user: {}, maxResults: {}",
                 eventId, userId, maxResults);
 
-        // 1. Получаем все похожие события для заданного eventId
+        // Получаем все похожие события для заданного eventId
         List<EventSimilarity> similarities = eventSimilarityRepository
                 .findByEvent1OrEvent2OrderBySimilarityDesc(eventId);
 
-        // 2. Если пользователь указан, исключаем события, с которыми он уже взаимодействовал
+        // Если пользователь указан, исключаем события, с которыми он уже взаимодействовал
         Set<Long> interactedEventIds = Collections.emptySet();
         if (userId > 0) {
             List<UserAction> userActions = userActionRepository.findAllByUserId(userId);
@@ -144,14 +155,14 @@ public class RecommendationService {
             return Collections.emptyMap();
         }
 
-        // 1. Получаем все действия для указанных событий одним запросом
+        // Получаем все действия для указанных событий одним запросом
         List<UserAction> allActions = userActionRepository.findAllByEventIdIn(eventIds);
 
-        // 2. Группируем действия по eventId
+        // Группируем действия по eventId
         Map<Long, List<UserAction>> actionsByEvent = allActions.stream()
                 .collect(Collectors.groupingBy(UserAction::getEventId));
 
-        // 3. Для каждого eventId рассчитываем score
+        // Для каждого eventId рассчитываем score
         Map<Long, Double> result = new HashMap<>();
 
         for (Long eventId : eventIds) {
@@ -207,4 +218,35 @@ public class RecommendationService {
 
         return result;
     }
+
+    private Map<Long, List<EventSimilarity>> getSimilaritiesGroupedByEvent(List<Long> eventIds) {
+        if (eventIds == null || eventIds.isEmpty()) {
+            return new HashMap<>();
+        }
+
+        List<EventSimilarity> allSimilarities = eventSimilarityRepository
+                .findAllByEventIds(eventIds);
+
+        // Группируем в Map через Stream
+        return allSimilarities.stream()
+                .flatMap(sim -> Stream.of(
+                        Map.entry(sim.getEvent1(), sim),
+                        Map.entry(sim.getEvent2(), sim)
+                ))
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        HashMap::new,
+                        Collectors.mapping(
+                                Map.Entry::getValue,
+                                Collectors.collectingAndThen(
+                                        Collectors.toList(),
+                                        list -> {
+                                            list.sort((a, b) -> Double.compare(b.getSimilarity(), a.getSimilarity()));
+                                            return list;
+                                        }
+                                )
+                        )
+                ));
+    }
+
 }

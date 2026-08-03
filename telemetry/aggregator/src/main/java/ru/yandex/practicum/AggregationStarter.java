@@ -28,6 +28,7 @@ public class AggregationStarter {
     private final Map<Integer, Map<Integer, Double>> eventUserActionMatrix = new HashMap<>();
     private final Map<Integer, Double> eventSumValue = new HashMap<>();
     private final Map<Integer, Map<Integer, Double>> minWeightsSums = new HashMap<>();
+    private static final double EPSILON = 1e-9;
 
     public void start() {
         try {
@@ -99,7 +100,7 @@ public class AggregationStarter {
 
             double otherUserWeight = getUserWeight(otherEventId, userId);
 
-            if (otherUserWeight == 0.0) {
+            if (Math.abs(otherUserWeight) < EPSILON) {
                 continue;
             }
 

@@ -18,8 +18,8 @@ public class GlobalExceptionHandler {
                 .asRuntimeException();
     }
 
-    @GrpcExceptionHandler(Exception.class)
-    public StatusRuntimeException handleGenericException(Exception e) {
+    @GrpcExceptionHandler(Throwable.class)
+    public StatusRuntimeException handleGenericException(Throwable e) {
         log.error("Internal error: {}", e.getMessage(), e);
         return Status.INTERNAL
                 .withDescription("Internal server error: " + e.getMessage())

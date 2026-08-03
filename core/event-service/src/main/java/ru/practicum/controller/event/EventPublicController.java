@@ -93,8 +93,8 @@ public class EventPublicController {
 
     @GetMapping("/recommendations")
     public List<EventShortDto> getRecommendedEvents(
-            @RequestHeader("X-EWM-USER-ID") Long userId,
-            @RequestParam(defaultValue = "10") int maxResults
+            @RequestHeader("X-EWM-USER-ID") @PositiveOrZero Long userId,
+            @RequestParam(defaultValue = "10") @PositiveOrZero int maxResults
     ) {
 
         log.info("Запрос рекомендаций для пользователя: {}, maxResults: {}", userId, maxResults);
@@ -103,8 +103,8 @@ public class EventPublicController {
 
     @PutMapping("/{eventId}/like")
     public void likeEvent(
-            @PathVariable Long eventId,
-            @RequestHeader("X-EWM-USER-ID") Long userId
+            @PathVariable @PositiveOrZero Long eventId,
+            @RequestHeader("X-EWM-USER-ID") @PositiveOrZero Long userId
     ) {
 
         log.info("Пользователь {} ставит лайк событию {}", userId, eventId);

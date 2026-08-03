@@ -1,11 +1,13 @@
 package ru.yandex.practicum.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.ewm.stats.avro.ActionTypeAvro;
 import ru.practicum.ewm.stats.avro.UserActionAvro;
 import ru.yandex.practicum.model.UserAction;
 
 import java.time.Instant;
 
+@UtilityClass
 public class UserActionMapper {
 
     public static UserAction toEntity(UserActionAvro avro) {
