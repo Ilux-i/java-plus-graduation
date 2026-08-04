@@ -1,4 +1,4 @@
-package ru.practicum;
+package ru.practicum.client;
 
 import ru.practicum.ewm.HitDto;
 import ru.practicum.ewm.StatRequestParamDto;

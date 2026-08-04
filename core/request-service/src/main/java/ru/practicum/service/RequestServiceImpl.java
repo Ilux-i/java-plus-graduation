@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.client.CollectorClient;
 import ru.practicum.event.client.EventClient;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.state.EventState;
@@ -15,6 +16,7 @@ import ru.practicum.request.RequestMapper;
 import ru.practicum.request.RequestStatus;
 import ru.practicum.request.dto.CreateUpdateRequestDto;
 import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.stats.service.collector.UserActionOuterClass.ActionTypeProto;
 import ru.practicum.user.User;
 import ru.practicum.user.UserClient;
 import ru.practicum.user.UserMapper;
@@ -32,6 +34,7 @@ public class RequestServiceImpl implements RequestService {
     private final RequestRepository requestRepository;
     private final UserClient userClient;
     private final EventClient eventClient;
+    private final CollectorClient collectorClient;
 
     @Transactional
     @Override
@@ -84,6 +87,18 @@ public class RequestServiceImpl implements RequestService {
             initialStatus = RequestStatus.CONFIRMED;
         } else {
             initialStatus = RequestStatus.PENDING;
+        }
+
+        try {
+            collectorClient.collectUserAction(
+                    requester.getId(),
+                    event.getId(),
+                    ActionTypeProto.ACTION_REGISTER
+            );
+            log.info("Регистрация на событие {} от пользователя {} отправлена в Collector",
+                    event.getId(), requester.getId());
+        } catch (Exception e) {
+            log.error("Ошибка отправки регистрации в Collector: {}", e.getMessage(), e);
         }
 
         ParticipationRequest request = RequestMapper.toEntity(now, event.getId(), requester.getId(), initialStatus);

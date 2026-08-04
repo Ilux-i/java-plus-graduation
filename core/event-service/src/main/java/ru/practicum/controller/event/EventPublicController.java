@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.StatClient;
+import ru.practicum.client.StatClient;
 import ru.practicum.constants.Constants;
 import ru.practicum.event.dto.event.EventFullDto;
 import ru.practicum.event.dto.event.EventShortDto;
@@ -89,6 +89,26 @@ public class EventPublicController {
         log.info("Успешный публичный запрос на получение события по ID. " +
                 "В статистику внесена новая запись: {}", hitResult);
         return result;
+    }
+
+    @GetMapping("/recommendations")
+    public List<EventShortDto> getRecommendedEvents(
+            @RequestHeader("X-EWM-USER-ID") @PositiveOrZero Long userId,
+            @RequestParam(defaultValue = "10") @PositiveOrZero int maxResults
+    ) {
+
+        log.info("Запрос рекомендаций для пользователя: {}, maxResults: {}", userId, maxResults);
+        return eventService.getRecommendedEvents(userId, maxResults);
+    }
+
+    @PutMapping("/{eventId}/like")
+    public void likeEvent(
+            @PathVariable @PositiveOrZero Long eventId,
+            @RequestHeader("X-EWM-USER-ID") @PositiveOrZero Long userId
+    ) {
+
+        log.info("Пользователь {} ставит лайк событию {}", userId, eventId);
+        eventService.likeEvent(eventId, userId);
     }
 
 }

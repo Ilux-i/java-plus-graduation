@@ -1,5 +1,6 @@
 package ru.practicum.controller.event;
 
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,14 @@ public class EventInteriorController {
 
     @GetMapping("/{eventId}")
     public Event findById(
-            @PathVariable Long eventId
+            @PathVariable @PositiveOrZero Long eventId
     ) {
         return service.findById(eventId);
     }
 
     @GetMapping("/{eventId}/exists")
     public Boolean existsById(
-            @PathVariable Long eventId
+            @PathVariable @PositiveOrZero Long eventId
     ) {
         return service.existsById(eventId);
     }
